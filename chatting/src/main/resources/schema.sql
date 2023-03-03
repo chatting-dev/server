@@ -10,7 +10,7 @@ CREATE TABLE user_account
     email       varchar(255) not null,
     password    varchar(255) not null,
     nickname    varchar(64)  not null,
-    profile_url nvarchar     not null,
+    profile_url varchar(255) not null,
     created_at  timestamp    not null,
     modified_at timestamp    not null,
     PRIMARY KEY (id)
