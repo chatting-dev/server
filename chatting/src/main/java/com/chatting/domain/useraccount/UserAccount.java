@@ -39,6 +39,18 @@ public class UserAccount extends AuditingFields {
 	@Column(name = "profile_url", nullable = false)
 	private String profileUrl;
 
+	private UserAccount(final String email, final String loginId, final String password, final String nickname) {
+		this.email = email;
+		this.loginId = loginId;
+		this.password = password;
+		this.nickname = nickname;
+		this.profileUrl = "";    // TODO : default profile url 설정
+	}
+
+	public static UserAccount of(String email, String loginId, String password, String nickname) {
+		return new UserAccount(email, loginId, password, nickname);
+	}
+
 	@Override
 	public boolean equals(Object o) {
 		if (this == o)
