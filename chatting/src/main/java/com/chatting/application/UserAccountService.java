@@ -8,6 +8,7 @@ import com.chatting.domain.useraccount.UserAccount;
 import com.chatting.domain.useraccount.UserAccountRepository;
 import com.chatting.exception.BusinessException;
 import com.chatting.presentation.dto.request.SignUpRequest;
+import com.chatting.presentation.dto.response.SignUpResponse;
 
 import lombok.RequiredArgsConstructor;
 
@@ -20,10 +21,12 @@ public class UserAccountService {
 	private final UserAccountRepository userAccountRepository;
 
 	@Transactional
-	public void signUp(final SignUpRequest request) {
+	public SignUpResponse signUp(final SignUpRequest request) {
 		validate(request);
 		UserAccount userAccount = request.toEntity(passwordEncoder.encode(request.password()));
 		userAccountRepository.save(userAccount);
+
+		return new SignUpResponse(true);
 	}
 
 	private void validate(final SignUpRequest request) {

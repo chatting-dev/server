@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.chatting.application.UserAccountService;
 import com.chatting.presentation.dto.request.SignUpRequest;
+import com.chatting.presentation.dto.response.SignUpResponse;
 
 import lombok.RequiredArgsConstructor;
 
@@ -19,8 +20,10 @@ public class UserAccountController {
 	private final UserAccountService userAccountService;
 
 	@PostMapping("/users")
-	public ResponseEntity<Void> signUp(@RequestBody final SignUpRequest request) {
-		userAccountService.signUp(request);
-		return ResponseEntity.ok().build();
+	public ResponseEntity<SignUpResponse> signUp(@RequestBody final SignUpRequest request) {
+		SignUpResponse response = userAccountService.signUp(request);
+		return ResponseEntity
+			.ok()
+			.body(response);
 	}
 }
