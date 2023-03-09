@@ -6,6 +6,8 @@ import com.chatting.domain.AuditingFields;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -39,12 +41,17 @@ public class UserAccount extends AuditingFields {
 	@Column(name = "profile_url", nullable = false)
 	private String profileUrl;
 
+	@Column(name = "user_account_role", nullable = false, length = 64)
+	@Enumerated(EnumType.STRING)
+	private UserAccountRole userAccountRole;
+
 	private UserAccount(final String email, final String loginId, final String password, final String nickname) {
 		this.email = email;
 		this.loginId = loginId;
 		this.password = password;
 		this.nickname = nickname;
 		this.profileUrl = "";    // TODO : default profile url 설정
+		this.userAccountRole = UserAccountRole.USER;
 	}
 
 	public static UserAccount of(String email, String loginId, String password, String nickname) {
