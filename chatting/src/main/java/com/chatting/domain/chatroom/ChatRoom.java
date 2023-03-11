@@ -28,11 +28,13 @@ public class ChatRoom extends AuditingFields {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
+	@Column(length = 64, nullable = false)
 	private String name;
 
 	@Column(nullable = false)
 	private String thumbnailUrl;
 
+	@Column(nullable = false)
 	private Integer maxCount;
 
 	@JoinColumn(name = "topic_id")
