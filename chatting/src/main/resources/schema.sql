@@ -19,12 +19,13 @@ CREATE TABLE user_account
 
 CREATE TABLE chat_room
 (
-    id          bigint      not null AUTO_INCREMENT,
-    name        varchar(64) not null,
-    max_count   int         not null,
-    topic_id    bigint      not null,
-    created_at  timestamp   not null,
-    modified_at timestamp   not null,
+    id            bigint       not null AUTO_INCREMENT,
+    name          varchar(64)  not null,
+    thumbnail_url varchar(255) not null,
+    max_count     int          not null,
+    topic_id      bigint       not null,
+    created_at    timestamp    not null,
+    modified_at   timestamp    not null,
     PRIMARY KEY (id)
 );
 
