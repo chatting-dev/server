@@ -84,4 +84,21 @@ class JwtTokenProviderTest {
 			() -> assertThat(authentication.getAuthorities()).isEqualTo(authorities)
 		);
 	}
+
+	@DisplayName("토큰이 정상적으로 만료됐는지 검증한다.")
+	@Test
+	void givenToken_whenExpireToken_thenReturnsExpiredToken() {
+		// given
+		String payload = "testLoginId";
+		List<SimpleGrantedAuthority> authorities = List.of(new SimpleGrantedAuthority("ROLE_USER"));
+		String token = jwtTokenProvider.createToken(payload, authorities);
+
+		// when
+		String expiredToken = jwtTokenProvider.expireToken(token);
+
+		// then
+		assertThatThrownBy(() -> jwtTokenProvider.validateToken(expiredToken))
+			.isInstanceOf(InvalidTokenException.class)
+			.hasMessage("만료된 JWT 토큰입니다.");
+	}
 }
