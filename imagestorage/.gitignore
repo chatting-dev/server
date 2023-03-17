@@ -35,3 +35,12 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### static ###
+/src/main/resources/static/**
+
+### YML ###
+application-local.yml
+application-dev.yml
+application-prod.yml
+application-test.yml
