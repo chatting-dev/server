@@ -37,7 +37,7 @@ public class ImageService {
 			Path imageStoragePath = storagePath.resolve(imageFileName);
 			Files.copy(imageFile.getInputStream(), imageStoragePath, StandardCopyOption.REPLACE_EXISTING);
 
-			return ImageUploadResponse.of(serverPrefix + storagePath);
+			return ImageUploadResponse.of(serverPrefix.concat(imageFileName));
 		} catch (final IOException e) {
 			throw new BusinessException("이미지 저장에 실패했습니다.", ErrorCode.F_INVALID);
 		}
