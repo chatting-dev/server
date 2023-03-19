@@ -5,8 +5,8 @@ import lombok.Getter;
 @Getter
 public enum ErrorCode {
 
-	// USER_ACCOUNT
-	F_INVALID("이미지 파일 바이트 변환 에러");
+	F_INVALID("유효하지 않은 파일"),
+	F_NOT_FOUND("경로상 이미지 탐색 에러");
 
 	private final String description;
 
