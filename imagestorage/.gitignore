@@ -38,6 +38,7 @@ out/
 
 ### static ###
 /src/main/resources/static/**
+/src/test/resources/static/**
 
 ### YML ###
 application-local.yml
