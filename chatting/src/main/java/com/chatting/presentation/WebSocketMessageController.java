@@ -14,12 +14,12 @@ import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(value = "/chat")
+@RequestMapping("/chat")
 public class WebSocketMessageController {
 	private final WebSocketService webSocketService;
 
-	@PostMapping(value = "/sendMessage")
-	public ResponseEntity<SendMessageResponse> sendMessage(@RequestBody SendMessageRequest sendMessageRequest) {
+	@PostMapping("/sendMessage")
+	public ResponseEntity<SendMessageResponse> sendMessage(@RequestBody final SendMessageRequest sendMessageRequest) {
 		SendMessageResponse response = webSocketService.sendMessageByWebSocket(sendMessageRequest);
 
 		return ResponseEntity

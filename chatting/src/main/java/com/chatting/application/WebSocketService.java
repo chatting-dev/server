@@ -17,7 +17,7 @@ public class WebSocketService {
 	private final SimpMessageSendingOperations messagingTemplate;
 	private final UserAccountRepository userAccountRepository;
 
-	public SendMessageResponse sendMessageByWebSocket(SendMessageRequest sendMessageRequest) {
+	public SendMessageResponse sendMessageByWebSocket(final SendMessageRequest sendMessageRequest) {
 		if (userAccountRepository.existsByLoginId(sendMessageRequest.senderId())) {
 			return new SendMessageResponse(false);
 		}
