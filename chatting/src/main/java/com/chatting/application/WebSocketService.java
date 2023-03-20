@@ -18,7 +18,7 @@ public class WebSocketService {
 	private final UserAccountRepository userAccountRepository;
 
 	public SendMessageResponse sendMessageByWebSocket(final SendMessageRequest sendMessageRequest) {
-		if (userAccountRepository.existsByLoginId(sendMessageRequest.senderId())) {
+		if (!userAccountRepository.existsByLoginId(sendMessageRequest.receiverId())) {
 			return new SendMessageResponse(false);
 		}
 		messagingTemplate.convertAndSend("/sub/" + sendMessageRequest.receiverId()
