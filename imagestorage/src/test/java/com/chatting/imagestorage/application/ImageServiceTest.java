@@ -58,7 +58,7 @@ class ImageServiceTest {
 			String imageDownloadUrl = "1cad34b7-55bc-49c3-a5a8-d384c3d30c26.jpeg";
 
 			// when
-			byte[] downloadImage = sut.downloadImage(imageDownloadUrl);
+			byte[] downloadImage = sut.downloadImage(imageDownloadUrl, 600);
 
 			// then
 			assertThat(downloadImage).isNotNull();
@@ -71,7 +71,7 @@ class ImageServiceTest {
 			String imageDownloadUrl = "something.jpeg";
 
 			// when & then
-			assertThatThrownBy(() -> sut.downloadImage(imageDownloadUrl))
+			assertThatThrownBy(() -> sut.downloadImage(imageDownloadUrl, 600))
 				.isInstanceOf(ImageFileNotFoundException.class)
 				.hasMessage("해당 파일이 경로에 존재하지 않습니다.");
 		}
