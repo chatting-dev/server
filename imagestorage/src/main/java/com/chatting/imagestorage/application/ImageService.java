@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StreamUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.chatting.imagestorage.domain.FileExtension;
 import com.chatting.imagestorage.domain.ImageFile;
 import com.chatting.imagestorage.exception.BusinessException;
 import com.chatting.imagestorage.exception.ErrorCode;
@@ -47,11 +48,13 @@ public class ImageService {
 		}
 	}
 
-	public byte[] downloadImage(final String imageUrl) {
+	public byte[] downloadImage(final String imageUrl, final int width) {
 		Path imageStoredPath = storagePath.resolve(imageUrl);
 
 		try (FileInputStream fis = new FileInputStream(imageStoredPath.toFile())) {
-			return StreamUtils.copyToByteArray(fis);
+			FileExtension extension = FileExtension.from(imageUrl);
+			byte[] originImage = StreamUtils.copyToByteArray(fis);
+			return extension.resizeImage(originImage, width);
 		} catch (final FileNotFoundException e) {
 			throw new ImageFileNotFoundException("해당 파일이 경로에 존재하지 않습니다.", ErrorCode.F_NOT_FOUND);
 		} catch (final IOException e) {
