@@ -1,5 +1,8 @@
 package com.chatting.imagestorage.presentation;
 
+import java.util.concurrent.TimeUnit;
+
+import org.springframework.http.CacheControl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,6 +24,7 @@ import lombok.RequiredArgsConstructor;
 public class ImageController {
 
 	private static final String DEFAULT_WIDTH = "600";
+	private static final int CACHE_CONTROL_MAX_AGE = 30;
 
 	private final ImageService imageService;
 
@@ -36,6 +40,7 @@ public class ImageController {
 		@RequestParam(required = false, defaultValue = DEFAULT_WIDTH) final int width) {
 		return ResponseEntity.status(HttpStatus.OK)
 			.contentType(FileExtension.from(imageUrl).mediaType())
+			.cacheControl(CacheControl.maxAge(CACHE_CONTROL_MAX_AGE, TimeUnit.DAYS))
 			.body(imageService.downloadImage(imageUrl, width));
 	}
 }
