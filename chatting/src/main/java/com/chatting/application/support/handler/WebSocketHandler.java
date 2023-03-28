@@ -3,6 +3,7 @@ package com.chatting.application.support.handler;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
@@ -19,6 +20,12 @@ public class WebSocketHandler extends TextWebSocketHandler {
 	public void afterConnectionEstablished(WebSocketSession session) throws Exception {
 		sessions.put(session.getId(), session);
 		receivedPongSessions.put(session.getId(), pongCount);
+	}
+
+	@Override
+	public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
+		sessions.remove(session.getId());
+		receivedPongSessions.remove(session.getId());
 	}
 
 }
