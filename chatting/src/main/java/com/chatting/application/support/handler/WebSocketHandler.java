@@ -4,6 +4,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.springframework.web.socket.CloseStatus;
+import org.springframework.web.socket.PongMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
@@ -26,6 +27,11 @@ public class WebSocketHandler extends TextWebSocketHandler {
 	public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
 		sessions.remove(session.getId());
 		receivedPongSessions.remove(session.getId());
+	}
+
+	@Override
+	protected void handlePongMessage(WebSocketSession session, PongMessage pongMessage) {
+		receivedPongSessions.put(session.getId(), pongCount);
 	}
 
 }
