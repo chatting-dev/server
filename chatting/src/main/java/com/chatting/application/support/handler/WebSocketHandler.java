@@ -1,9 +1,14 @@
 package com.chatting.application.support.handler;
 
+import static org.springframework.web.socket.CloseStatus.*;
+
+import java.io.IOException;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.socket.CloseStatus;
+import org.springframework.web.socket.PingMessage;
 import org.springframework.web.socket.PongMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
@@ -32,6 +37,26 @@ public class WebSocketHandler extends TextWebSocketHandler {
 	@Override
 	protected void handlePongMessage(WebSocketSession session, PongMessage pongMessage) {
 		receivedPongSessions.put(session.getId(), pongCount);
+	}
+
+	@Scheduled(fixedRate = 1000)
+	public void expire() {
+		sessions.forEach((webSocketId, webSocketSession) -> {
+			try {
+				receivedPongSessions.put(webSocketId, receivedPongSessions.get(webSocketId) - 1);
+				webSocketSession.sendMessage(new PingMessage());
+			} catch (IOException e) {
+			}
+
+			if (receivedPongSessions.get(webSocketId) == 0) {
+				try {
+					webSocketSession.close();
+					afterConnectionClosed(webSocketSession, SESSION_NOT_RELIABLE);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
 	}
 
 }
