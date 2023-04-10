@@ -5,6 +5,7 @@ import java.util.Objects;
 import com.chatting.domain.AuditingFields;
 import com.chatting.domain.topic.Topic;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -27,8 +28,13 @@ public class ChatRoom extends AuditingFields {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
+	@Column(length = 64, nullable = false)
 	private String name;
 
+	@Column(nullable = false)
+	private String thumbnailUrl;
+
+	@Column(nullable = false)
 	private Integer maxCount;
 
 	@JoinColumn(name = "topic_id")
