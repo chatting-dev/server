@@ -31,6 +31,8 @@ public class ChatRoom extends AuditingFields {
 
 	private Integer maxCount;
 
+	private Integer count;
+
 	@JoinColumn(name = "topic_id")
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Topic topic;
@@ -42,6 +44,15 @@ public class ChatRoom extends AuditingFields {
 		if (!(o instanceof ChatRoom that))
 			return false;
 		return this.getId() != null && this.getId().equals(that.getId());
+	}
+
+	private ChatRoom(final String name, Topic topic){
+		this.name = name;
+		this.topic = topic;
+	}
+
+	public static ChatRoom of(String name,Topic topic){
+		return new ChatRoom(name, topic);
 	}
 
 	@Override

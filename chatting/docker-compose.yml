@@ -1,0 +1,63 @@
+
+version: '3'
+
+services:
+  chatting-mysql:
+    restart: always
+    platform: linux/x86_64
+    image: mysql:5.7
+    container_name: chatting-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: 1234
+    volumes:
+      - ./config/:/docker-entrypoint-initdb.d/
+    ports:
+      - 3307:3306
+
+#services:
+#  mysqldb:
+#    image: mysql
+#    restart: always
+#    environment:
+#      MYSQL_ROOT_PASSWORD: 1234
+#    ports:
+#      - 3307:3306
+#
+#  backend:
+#    build: .
+#    restart: always
+#    environment:
+#      SPRING_DATASOURCE_URL: jdbc:mysql://mysqldb:3307/test
+#      SPRING_DATASOURCE_USERNAME: root
+#      SPRING_DATASOURCE_PASSWORD: 1234
+#    ports:
+#      - 8080:8080
+#    depends_on:
+#      - mysqldb
+  zookeeper:
+
+    container_name: zookeeper
+
+    image: wurstmeister/zookeeper
+
+    ports:
+
+      - "2181:2181"
+
+  kafka:
+
+    image: wurstmeister/kafka
+
+    ports:
+
+      - "9092:9092"
+
+    environment:
+
+      KAFKA_ADVERTISED_HOST_NAME: localhost
+
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+
+    volumes:
+
+      - /var/run/docker.sock:/var/run/docker.sock

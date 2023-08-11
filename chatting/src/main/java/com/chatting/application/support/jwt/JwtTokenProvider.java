@@ -82,6 +82,18 @@ public class JwtTokenProvider {
 		return new UsernamePasswordAuthenticationToken(claims.getSubject(), null, authorities);
 	}
 
+	public String expireToken(final String token) {
+		Jws<Claims> jws = tokenToJws(token);
+
+		Claims claims = jws.getBody();
+		claims.setExpiration(new Date());
+
+		return Jwts.builder()
+			.setClaims(claims)
+			.signWith(key, SignatureAlgorithm.HS256)
+			.compact();
+	}
+
 	public void validateToken(final String token) {
 		final Jws<Claims> claims = tokenToJws(token);
 		validateExpiredToken(claims);
@@ -100,7 +112,7 @@ public class JwtTokenProvider {
 		} catch (final SignatureException e) {
 			throw new InvalidTokenException("토큰의 SECRET KEY가 변조되었습니다.", ErrorCode.JWT_INVALID);
 		} catch (final ExpiredJwtException e) {
-			throw new InvalidTokenException("만료된 JWT 토큰입니다.", ErrorCode.JWT_INVALID);
+			throw new InvalidTokenException("만료된 JWT 토큰입니다.", ErrorCode.JWT_EXPIRED);
 		}
 	}
 

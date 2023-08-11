@@ -36,6 +36,13 @@ public class ChatJoin extends AuditingFields {
 	@ManyToOne(fetch = FetchType.LAZY)
 	private UserAccount userAccount;
 
+	private ChatJoin(final ChatRoom chatRoom, final UserAccount userAccount){
+		this.chatRoom = chatRoom;
+		this.userAccount = userAccount;
+	}
+	public static ChatJoin of(final ChatRoom chatRoom, final UserAccount userAccount){
+		return new ChatJoin(chatRoom, userAccount);
+	}
 	@Override
 	public boolean equals(Object o) {
 		if (this == o)

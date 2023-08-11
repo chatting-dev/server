@@ -27,6 +27,13 @@ public class Topic extends AuditingFields {
 	@Column(name = "name", nullable = false, length = 64)
 	private String name;
 
+	private Topic(final String name){
+		this.name = name;
+	}
+
+	public static Topic of(String name){
+		return new Topic(name);
+	}
 	@Override
 	public boolean equals(Object o) {
 		if (this == o)

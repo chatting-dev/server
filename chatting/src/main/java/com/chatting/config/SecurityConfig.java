@@ -11,8 +11,10 @@ import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 
 import com.chatting.application.AuthService;
+import com.chatting.application.support.handler.LogoutProcessHandler;
 import com.chatting.application.support.jwt.JwtTokenProvider;
 import com.chatting.exception.ErrorCode;
 import com.chatting.exception.UserNotFoundException;
@@ -35,11 +37,17 @@ public class SecurityConfig {
 			.httpBasic().disable()
 			.csrf().disable()
 			.authorizeHttpRequests(auth -> auth
-				.requestMatchers("/api/v1/users", "/api/v1/auth")
+				.requestMatchers("/api/v1/users", "/api/v1/auth","/my-chat","/kafka/publish")
 				.permitAll()
 				.anyRequest()
 				.authenticated()
 			);
+
+		http
+			.logout(logout -> logout
+				.logoutUrl("/api/v1/logout")
+				.logoutSuccessHandler(logoutSuccessHandler())
+				.logoutSuccessUrl("/api/v1"));
 
 		http
 			.sessionManagement()
@@ -50,6 +58,11 @@ public class SecurityConfig {
 			.addFilterBefore(new JwtFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
 
 		return http.build();
+	}
+
+	@Bean
+	public LogoutSuccessHandler logoutSuccessHandler() {
+		return new LogoutProcessHandler(jwtTokenProvider);
 	}
 
 	@Bean
